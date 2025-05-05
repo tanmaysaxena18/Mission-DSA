@@ -1,0 +1,10 @@
+#Top K Frequent Elements
+from collections import Counter
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+         return [num for num, _ in Counter(nums).most_common(k)]
+'''
+The simplest and most direct alternative is to use the most_common method provided by Counter, which internally does the heavy lifting for you.
+
+How It Works: most_common(k) returns the k most common elements as tuples (element, count), and then the list comprehension extracts the elements
+'''
