@@ -1,0 +1,23 @@
+#Find K Pairs with Smallest Sums
+import heapq
+from typing import List
+class Solution:
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        if not nums1 or not nums2 or k <= 0:
+            return []
+        m, n = len(nums1), len(nums2)
+        res = []
+        min_heap = []
+        #Initialize the heap with pairs (nums1[i], nums2[0]) for i up to min(k, m).
+        #nums1 element is with nums2[0].
+        for i in range(min(k, m)):
+            heapq.heappush(min_heap, (nums1[i] + nums2[0], i, 0))
+        #Iteratively build the result list by always choosing the next smallest sum pair.
+        while k > 0 and min_heap:
+            curr_sum, i, j = heapq.heappop(min_heap)
+            res.append([nums1[i], nums2[j]])
+            k -= 1
+            #If there is a next element in nums2 for the current i, push the new pair into the heap.
+            if j + 1 < n:
+                heapq.heappush(min_heap, (nums1[i] + nums2[j + 1], i, j + 1))  
+        return res
