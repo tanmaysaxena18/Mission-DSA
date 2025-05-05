@@ -1,0 +1,67 @@
+/*
+Imagine you have some toy trains. Har train ek line mein set hai, aur har train ke carriages (toys) chhote se lekar bade tak order mein lage hue hain. Ab humein sab trains ke carriages ko ek badi train banani hai, jismein sab carriages size ke hisaab se sahi order mein ho.
+
+Ye solution yeh karta hai:
+
+Sabse Pehle (Heap Initialization):
+
+Imagine karo ki tumhare paas ek magic box hai (jo min heap/priority queue kehlata hai).
+
+Har train ke pehle carriage ko magic box mein daal do. Is box mein hamesha sabse chhota carriage top par hota hai.
+
+Merging Process:
+
+Ab, jab tak magic box khali na ho, tum repeatedly sabse chhota carriage box se nikaaloge.
+
+Jo carriage tum nikaalte ho, usko final train ke end mein jod do.
+
+Agar us carriage ke baad aur bhi carriages hain (jaise ek aur toy train carriage aata hai), toh us agle carriage ko magic box mein daal do.
+
+Final Train Banana:
+
+Ye process tab tak chalta rahega jab tak magic box mein koi carriage bacha na ho.
+
+Aakhir mein, final train ekdum sorted (chhote se bade tak) ho jayegi!
+
+Code ko thoda simple language mein samjhate hain:
+
+Heap Mein Daalna:
+
+python
+for i, node in enumerate(lists):  # Har train (list) ke starting carriage (node) ko dekhte hain.
+    if node:
+        heapq.heappush(minHeap, (node.val, i, node))
+Yahan hum har train ke pehle carriage ko magic box (minHeap) mein daalte hain.
+
+Final Train Ko Banana:
+
+python
+dummy = prev = ListNode(0)
+while minHeap:
+    val, i, node = heapq.heappop(minHeap)  # Magic box se sabse chhota carriage leta hai.
+    prev.next = node  # Usko final train (linked list) mein jodta hai.
+    prev = prev.next  # Ab previous pointer update kar dete hain.
+    if node.next:
+        heapq.heappush(minHeap, (node.next.val, i, node.next))  # Agar aage koi carriage hai, use magic box mein daal do.
+Yahan final train dummy node se shuru hoti hai, aur har bar sabse chhota carriage jodte jate hain.
+
+Return Final Train:
+
+Dummy node ke baad wali final train hi return hoti hai.
+
+Is tarah se, yeh solution sab trains ke carriages (sorted sub-lists) ko ek badi sorted train (merged sorted linked list) mein convert kar deta hai
+*/
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        minHeap = []
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(minHeap, (node.val, i, node))
+        dummy = prev = ListNode(0)
+        while minHeap:
+            val, i, node = heapq.heappop(minHeap)
+            prev.next = node
+            prev = prev.next
+            if node.next:
+                heapq.heappush(minHeap, (node.next.val, i, node.next))
+        return dummy.next
