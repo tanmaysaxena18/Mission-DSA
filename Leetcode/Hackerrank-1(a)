@@ -1,0 +1,36 @@
+def consecutive_subsequences():
+    import sys
+    data = sys.stdin.read().strip().split()
+    if not data:
+        return
+    t = int(data[0])
+    idx = 1
+    results = []
+    
+    for _ in range(t):
+        n = int(data[idx])
+        k = int(data[idx + 1])
+        idx += 2
+        
+        #Frequency array counts for each prefix sum remainder.
+        cnt = [0] * k
+        cnt[0] = 1  # Empty subarray always counts
+        
+        total = 0
+        for i in range(n):
+            num = int(data[idx])
+            idx += 1
+            total = (total + num) % k
+            cnt[total] += 1
+        
+        result = 0
+        #For each remainder group, add combinations of choosing 2.
+        for c in cnt:
+            result += c * (c - 1) // 2
+        
+        results.append(result)
+    
+    sys.stdout.write("\n".join(map(str, results)) + "\n")
+
+if __name__ == '__main__':
+    consecutive_subsequences()
