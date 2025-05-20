@@ -1,0 +1,12 @@
+def solve(n):
+    queue = ["9"]
+    
+    while queue:
+        candidate = queue.pop(0)
+        if int(candidate) % n == 0:
+            return candidate
+
+        queue.append(candidate + "0")
+        queue.append(candidate + "9")
+
+
