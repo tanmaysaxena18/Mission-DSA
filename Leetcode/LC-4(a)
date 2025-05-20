@@ -1,0 +1,29 @@
+
+from collections import Counter
+from heapq import heappop, heappush
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        # Step 1: Har task ki frequency count kar lo
+        freq_map = Counter(tasks)
+
+        # Step 2: Max heap bana lo frequency values ka negative leke 
+        max_heap = [-count for count in freq_map.values()]
+        heapq.heapify(max_heap)  # Heap structure mein daal diya
+
+        time = 0  # Total execution time
+        queue = []  # Ye track karega ki tasks kab wapas heap mein daalne hain
+
+        while max_heap or queue:
+            time += 1  # Har cycle mein time badhta jayega
+
+            if max_heap:  # Agar heap mein task hain toh sabse bada frequency waala nikal 
+# Ek task process kar diya (negative frequency thi isliye +1)
+                count = heappop(max_heap) +1
+#Agar abhi bhi kuch task baaki hain toh queue mein dal do specific cooldown ke saath
+                if count: 
+                    queue.append((count, time + n))  # Task wapas kab insert hoga
+ # Agar queue ka task cooldown complete kar chuka hai toh wapas heap mein daal do
+            if queue and queue[0][1] == time: 
+                heappush(max_heap, queue.pop(0)[0])
+        return time  
