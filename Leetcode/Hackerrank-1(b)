@@ -1,0 +1,36 @@
+import heapq
+
+def get_running_median():
+    n = int(input())
+    lowers = []   # Max-heap (using negatives)
+    highers = []  # Min-heap
+
+    def add_number(num):
+        if not lowers or num <= -lowers[0]:
+            heapq.heappush(lowers, -num)
+        else:
+            heapq.heappush(highers, num)
+
+    def rebalance():
+        #heaps are rebalanced so that 'lowers' either has the same number of elements as 'highers' or one more element.
+        if len(lowers) > len(highers) + 1:
+            heapq.heappush(highers, -heapq.heappop(lowers))
+        elif len(highers) > len(lowers):
+            heapq.heappush(lowers, -heapq.heappop(highers))
+
+    def get_median():
+        #When the total number is odd, 'lowers' has one extra number.
+        #When even, the median is the average of the two middle numbers.
+        if len(lowers) == len(highers):
+            return (-lowers[0] + highers[0]) / 2.0
+        else:
+            return float(-lowers[0])
+
+    for _ in range(n):
+        num = int(input())
+        add_number(num)
+        rebalance()
+        print(get_median())
+
+if __name__ == '__main__':
+    get_running_median()
