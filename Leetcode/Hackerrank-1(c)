@@ -1,0 +1,7 @@
+def sansaXor(arr):
+    if len(arr) % 2 == 0:
+        return 0
+    result = 0
+    for value in arr[::2]:
+        result ^= value
+    return result
