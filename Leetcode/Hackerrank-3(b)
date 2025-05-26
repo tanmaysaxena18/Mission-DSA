@@ -1,0 +1,20 @@
+def acmTeam(topic):
+    n = len(topic)           # Number of attendees
+    max_topics = 0           # Maximum topics known by any team
+    team_c = 0           # Number of teams that achieve that maximum
+    # Iterate over all possible pairs of attendees
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Calculate the total topics known by team consisting of person i and j.
+            # Using zip to iterate over corresponding characters in both strings.
+            combined_topics = 0
+            for a, b in zip(topic[i], topic[j]):
+                if a == '1' or b == '1':
+                    combined_topics += 1 
+          # Update maximum and count accordingly
+            if combined_topics > max_topics:
+                max_topics = combined_topics
+                team_c = 1
+            elif combined_topics == max_topics:
+                team_c += 1
+    return [max_topics, team_c]
